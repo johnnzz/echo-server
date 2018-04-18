@@ -48,7 +48,10 @@ def client(msg, log_buffer=sys.stderr):
         # after we break out of the loop receiving echoed chunks from
         # the server, close the client socket.
         print('closing socket', file=log_buffer)
-        sock.shutdown(socket.SHUT_RD)
+        try:
+            sock.shutdown(socket.SHUT_RD)
+        except OSError:
+            pass
         sock.close()
 
         # print the entire, echoed message
