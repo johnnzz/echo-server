@@ -56,7 +56,11 @@ def server(log_buffer=sys.stderr):
 
             finally:
                 # shutdown the socket
-                conn.shutdown(socket.SHUT_RD)
+                try:
+                    conn.shutdown(socket.SHUT_RD)
+                except OSError:
+                    # don't error on the edge case where the socket is already closed
+                    pass
                 conn.close()
                 print(
                     'echo complete, client connection closed', file=log_buffer
